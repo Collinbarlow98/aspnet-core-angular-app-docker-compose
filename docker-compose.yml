@@ -1,0 +1,20 @@
+version: '3.4'
+
+services:
+  tohapi:
+    image: ${DOCKER_REGISTRY-}tohapi
+    build:
+      context: .
+      dockerfile: ToHApi/Dockerfile
+    ports:
+      - "44361:443"
+
+  tohapi.app:
+    image: ${DOCKER_REGISTRY-}tohapiapp
+    build:
+      context: .
+      dockerfile: ToHApi/angular-tour-of-heroes/Dockerfile
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./ToHApi/angular-tour-of-heroes:/app

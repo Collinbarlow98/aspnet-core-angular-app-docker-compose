@@ -1,0 +1,48 @@
+services:
+  tohapi:
+    build:
+      context: C:\Users\CollinBarlow\source\repos\ToHApi
+      dockerfile: ToHApi/Dockerfile
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: ToHApi
+      target: base
+    container_name: ToHApi
+    entrypoint: tail -f /dev/null
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_LOGGING__CONSOLE__DISABLECOLORS: "true"
+      ASPNETCORE_URLS: https://+:443;https://+:80
+      DOTNET_USE_POLLING_FILE_WATCHER: '1'
+      NUGET_FALLBACK_PACKAGES: ''
+    image: tohapi:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /root/.nuget/packages  "/app/bin/Debug/net5.0/ToHApi.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: /bin/sh -c "if PID=$$(pidof
+        dotnet); then kill $$PID; fi"
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    ports:
+    - target: 80
+    - published: 44361
+      target: 443
+    - target: 443
+    tty: true
+    volumes:
+    - C:\Users\CollinBarlow\source\repos\ToHApi\ToHApi:/app:rw
+    - C:\Users\CollinBarlow\vsdbg\vs2017u5:/remote_debugger:rw
+    - C:\Users\CollinBarlow\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\CollinBarlow\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+    - C:\Users\CollinBarlow\.nuget\packages:/root/.nuget/packages:ro
+    - C:\Users\CollinBarlow\source\repos\ToHApi:/src:rw
+  tohapi.app:
+    build:
+      context: C:\Users\CollinBarlow\source\repos\ToHApi
+      dockerfile: ToHApi/angular-tour-of-heroes/Dockerfile
+    image: tohapiapp
+    ports:
+    - published: 4200
+      target: 4200
+    volumes:
+    - C:\Users\CollinBarlow\source\repos\ToHApi\ToHApi\angular-tour-of-heroes:/app:rw
+version: '3.4'

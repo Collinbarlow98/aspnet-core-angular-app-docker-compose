@@ -1,0 +1,28 @@
+services:
+  tohapi:
+    build:
+      context: C:\Users\CollinBarlow\source\repos\ToHApi
+      dockerfile: ToHApi/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: https://+:443;https://+:80
+    image: tohapi
+    ports:
+    - target: 80
+    - published: 44361
+      target: 443
+    - target: 443
+    volumes:
+    - C:\Users\CollinBarlow\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\CollinBarlow\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+  tohapi.app:
+    build:
+      context: C:\Users\CollinBarlow\source\repos\ToHApi
+      dockerfile: ToHApi/angular-tour-of-heroes/Dockerfile
+    image: tohapiapp
+    ports:
+    - published: 4200
+      target: 4200
+    volumes:
+    - C:\Users\CollinBarlow\source\repos\ToHApi\ToHApi\angular-tour-of-heroes:/app:rw
+version: '3.4'
